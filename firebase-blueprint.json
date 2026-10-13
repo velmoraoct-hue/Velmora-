@@ -1,0 +1,314 @@
+{
+  "entities": {
+    "Service": {
+      "title": "Service",
+      "description": "Clinic skincare or aesthetic procedure offering",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nameAr": { "type": "string", "maxLength": 150 },
+        "nameEn": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "enum": ["skincare", "injectables", "peeling", "laser"] },
+        "priceEgp": { "type": "number" },
+        "priceMaxEgp": { "type": "number" },
+        "durationMinutes": { "type": "number" },
+        "status": { "type": "string", "enum": ["draft", "published", "unavailable"] },
+        "requiresMedicalConsultation": { "type": "boolean" },
+        "descriptionAr": { "type": "string", "maxLength": 1000 },
+        "descriptionEn": { "type": "string", "maxLength": 1000 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["nameAr", "nameEn", "category", "priceEgp", "status"]
+    },
+    "Practitioner": {
+      "title": "Practitioner",
+      "description": "Licensed aesthetic doctor or skincare specialist",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nameAr": { "type": "string", "maxLength": 150 },
+        "nameEn": { "type": "string", "maxLength": 150 },
+        "titleAr": { "type": "string", "maxLength": 150 },
+        "titleEn": { "type": "string", "maxLength": 150 },
+        "qualificationsAr": { "type": "string", "maxLength": 500 },
+        "qualificationsEn": { "type": "string", "maxLength": 500 },
+        "approvedProcedures": { "type": "string", "maxLength": 500 },
+        "photoUrl": { "type": "string", "maxLength": 500 },
+        "isActive": { "type": "boolean" },
+        "branch": { "type": "string", "enum": ["october", "zayed", "both"] }
+      },
+      "required": ["nameAr", "nameEn", "titleAr", "titleEn", "isActive"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Customer appointment booking request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 120 },
+        "customerPhone": { "type": "string", "maxLength": 30 },
+        "customerEmail": { "type": "string", "maxLength": 150 },
+        "serviceId": { "type": "string", "maxLength": 100 },
+        "serviceNameAr": { "type": "string", "maxLength": 150 },
+        "serviceNameEn": { "type": "string", "maxLength": 150 },
+        "practitionerId": { "type": "string", "maxLength": 100 },
+        "practitionerName": { "type": "string", "maxLength": 150 },
+        "branch": { "type": "string", "enum": ["october", "zayed"] },
+        "appointmentDate": { "type": "string", "maxLength": 20 },
+        "appointmentTime": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "completed", "cancelled", "no-show"] },
+        "priceEgp": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "cancellationReason": { "type": "string", "maxLength": 300 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["customerName", "customerPhone", "serviceId", "appointmentDate", "appointmentTime", "branch", "status"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Client profile record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "totalAppointments": { "type": "number" },
+        "totalSpentEgp": { "type": "number" },
+        "lastVisitDate": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["name", "phone"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial income record from completed clinic procedure",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "bookingId": { "type": "string", "maxLength": 100 },
+        "customerName": { "type": "string", "maxLength": 120 },
+        "serviceName": { "type": "string", "maxLength": 150 },
+        "amountEgp": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["cash", "card", "instapay", "vodafone_cash"] },
+        "date": { "type": "string" },
+        "recordedBy": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["amountEgp", "paymentMethod", "date"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Clinic operational expense",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string", "enum": ["medical_supplies", "rent", "utilities", "marketing", "salaries", "maintenance", "other"] },
+        "description": { "type": "string", "maxLength": 200 },
+        "amountEgp": { "type": "number" },
+        "date": { "type": "string" },
+        "branch": { "type": "string", "enum": ["october", "zayed", "general"] },
+        "recordedBy": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["category", "description", "amountEgp", "date"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Aesthetic medical product or clinic consumable item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "enum": ["filler", "botox", "peel", "serum", "consumable", "cleanser"] },
+        "quantity": { "type": "number" },
+        "minThreshold": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 30 },
+        "costPerUnitEgp": { "type": "number" },
+        "batchNumber": { "type": "string", "maxLength": 60 },
+        "expiryDate": { "type": "string", "maxLength": 20 }
+      },
+      "required": ["name", "quantity", "minThreshold", "unit"]
+    },
+    "Offer": {
+      "title": "Offer",
+      "description": "Special package or promotional clinic bundle",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "titleAr": { "type": "string", "maxLength": 150 },
+        "titleEn": { "type": "string", "maxLength": 150 },
+        "descriptionAr": { "type": "string", "maxLength": 500 },
+        "descriptionEn": { "type": "string", "maxLength": 500 },
+        "discountPriceEgp": { "type": "number" },
+        "originalPriceEgp": { "type": "number" },
+        "validUntil": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "servicesIncluded": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["titleAr", "titleEn", "discountPriceEgp", "isActive"]
+    },
+    "BusinessSettings": {
+      "title": "BusinessSettings",
+      "description": "Global clinic configuration and contact parameters",
+      "type": "object",
+      "properties": {
+        "phoneOctober": { "type": "string", "maxLength": 50 },
+        "phoneZayed": { "type": "string", "maxLength": 50 },
+        "whatsApp": { "type": "string", "maxLength": 50 },
+        "octoberAddressAr": { "type": "string", "maxLength": 300 },
+        "octoberAddressEn": { "type": "string", "maxLength": 300 },
+        "zayedAddressAr": { "type": "string", "maxLength": 300 },
+        "zayedAddressEn": { "type": "string", "maxLength": 300 },
+        "openingHoursAr": { "type": "string", "maxLength": 200 },
+        "openingHoursEn": { "type": "string", "maxLength": 200 },
+        "googleMapsOctoberUrl": { "type": "string", "maxLength": 500 },
+        "googleMapsZayedUrl": { "type": "string", "maxLength": 500 },
+        "instagramUrl": { "type": "string", "maxLength": 200 },
+        "facebookUrl": { "type": "string", "maxLength": 200 },
+        "cancellationPolicyAr": { "type": "string", "maxLength": 1000 },
+        "cancellationPolicyEn": { "type": "string", "maxLength": 1000 }
+      }
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Administrative actions audit log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "action": { "type": "string", "maxLength": 100 },
+        "actorEmail": { "type": "string", "maxLength": 150 },
+        "details": { "type": "string", "maxLength": 500 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["action", "actorEmail", "timestamp"]
+    },
+    "UserRole": {
+      "title": "UserRole",
+      "description": "Staff access control roles and assigned granular permissions",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["owner", "admin", "receptionist", "practitioner"] },
+        "name": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["pending", "active", "deactivated"] },
+        "permissions": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    },
+    "StaffInvitation": {
+      "title": "StaffInvitation",
+      "description": "Pending and accepted staff email invitations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["owner", "admin", "receptionist", "practitioner"] },
+        "permissions": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "active", "deactivated"] },
+        "invitedByEmail": { "type": "string", "maxLength": 150 },
+        "invitedAt": { "type": "string" },
+        "acceptedAt": { "type": "string" },
+        "acceptedUid": { "type": "string", "maxLength": 128 },
+        "notes": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["email", "role", "status", "invitedByEmail", "invitedAt"]
+    },
+    "MediaAsset": {
+      "title": "MediaAsset",
+      "description": "Uploaded responsive media and clinic photos",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "url": { "type": "string" },
+        "storagePath": { "type": "string", "maxLength": 300 },
+        "category": { "type": "string", "enum": ["logos", "homepage", "services", "practitioners", "gallery", "offers", "branches", "icons", "other"] },
+        "altText": { "type": "string", "maxLength": 200 },
+        "caption": { "type": "string", "maxLength": 300 },
+        "sizeBytes": { "type": "number" },
+        "mimeType": { "type": "string", "maxLength": 50 },
+        "uploadedBy": { "type": "string", "maxLength": 150 },
+        "uploadedAt": { "type": "string" }
+      },
+      "required": ["name", "url", "category", "uploadedBy", "uploadedAt"]
+    },
+    "BrandConfig": {
+      "title": "BrandConfig",
+      "description": "Design tokens, color system, typography, and brand logos",
+      "type": "object",
+      "properties": {
+        "brandNameAr": { "type": "string", "maxLength": 150 },
+        "brandNameEn": { "type": "string", "maxLength": 150 },
+        "colorPageBg": { "type": "string", "maxLength": 20 },
+        "colorPrimary": { "type": "string", "maxLength": 20 },
+        "colorAccent": { "type": "string", "maxLength": 20 },
+        "isPublished": { "type": "boolean" },
+        "updatedBy": { "type": "string", "maxLength": 150 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["brandNameAr", "brandNameEn", "colorPrimary", "colorAccent"]
+    }
+  },
+  "firestore": {
+    "/services/{serviceId}": {
+      "schema": { "$ref": "#/entities/Service" },
+      "description": "Clinic catalog of skincare and aesthetic services"
+    },
+    "/practitioners/{practitionerId}": {
+      "schema": { "$ref": "#/entities/Practitioner" },
+      "description": "Clinic doctors and specialists"
+    },
+    "/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Client appointment requests"
+    },
+    "/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/Customer" },
+      "description": "Client directory"
+    },
+    "/transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "Revenue transactions"
+    },
+    "/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/Expense" },
+      "description": "Clinic expenses"
+    },
+    "/inventory/{itemId}": {
+      "schema": { "$ref": "#/entities/InventoryItem" },
+      "description": "Medical and cosmetic inventory"
+    },
+    "/offers/{offerId}": {
+      "schema": { "$ref": "#/entities/Offer" },
+      "description": "Special seasonal promotional packages"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/BusinessSettings" },
+      "description": "Clinic global settings"
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Administrative actions audit log"
+    },
+    "/staff_roles/{userId}": {
+      "schema": { "$ref": "#/entities/UserRole" },
+      "description": "Role-based permissions"
+    },
+    "/staff_invitations/{invitationId}": {
+      "schema": { "$ref": "#/entities/StaffInvitation" },
+      "description": "Staff email invitations"
+    },
+    "/media_assets/{mediaId}": {
+      "schema": { "$ref": "#/entities/MediaAsset" },
+      "description": "Clinic media gallery and website assets"
+    },
+    "/branding/{configId}": {
+      "schema": { "$ref": "#/entities/BrandConfig" },
+      "description": "Brand identity and design tokens configuration"
+    }
+  }
+}

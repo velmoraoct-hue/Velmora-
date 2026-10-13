@@ -1,0 +1,51 @@
+# ==============================================================================
+# VELMORA Aesthetics & Beauty - Search Engine Crawlers Policy (robots.txt)
+# Serving: Sheikh Zayed City & 6th of October City, Giza, Egypt
+# Official Website: https://velmora-aesthetics.eg
+# ==============================================================================
+
+# Search engines crawlers configuration
+User-agent: *
+Allow: /
+Allow: /#services
+Allow: /#branches
+Allow: /#branch-zayed
+Allow: /#branch-october
+Allow: /#practitioners
+Allow: /#offers
+Allow: /#gallery
+Allow: /#booking
+Allow: /#contact
+
+# Protect administrative panels, private operational APIs, and sensitive endpoints
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/
+Disallow: /api/*
+Disallow: /*?token=*
+Disallow: /*?session=*
+Disallow: /*?auth=*
+
+# Major Search Engine Bot Directives
+User-agent: Googlebot
+Allow: /
+Allow: /#branches
+Allow: /#services
+
+User-agent: Googlebot-Mobile
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# Canonical XML Sitemap for Sheikh Zayed & 6th of October Service Indexing
+Sitemap: https://velmora-aesthetics.eg/sitemap.xml
+
+# Host declaration
+Host: https://velmora-aesthetics.eg

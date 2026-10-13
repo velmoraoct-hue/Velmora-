@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Main Website Landing (Sheikh Zayed & 6th of October City) -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/?lang=en" />
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&amp;fit=crop&amp;w=1200&amp;q=85</image:loc>
+      <image:title>VELMORA Aesthetics &amp; Beauty Clinic - Sheikh Zayed &amp; 6th of October City</image:title>
+      <image:caption>عيادة ڤيلمورا للتجميل والعناية بالبشرة في مدينة 6 أكتوبر والشيخ زايد بمصر</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Clinic Branches & Locations (Sheikh Zayed & 6th of October) -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#branches</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#branches" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#branches" />
+  </url>
+
+  <!-- Sheikh Zayed Branch Specific Anchor (Beverly Hills / Dahshur Link) -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#branch-zayed</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#branch-zayed" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#branch-zayed" />
+  </url>
+
+  <!-- 6th of October Branch Specific Anchor (Motamayez / Central Axis / Mall of Arabia) -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#branch-october</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#branch-october" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#branch-october" />
+  </url>
+
+  <!-- Medical Aesthetics & Skincare Services -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#services</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#services" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#services" />
+  </url>
+
+  <!-- Online Consultation & Real-time Booking -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#booking</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#booking" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#booking" />
+  </url>
+
+  <!-- Consultant Dermatologists & Aesthetic Practitioners -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#practitioners</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#practitioners" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#practitioners" />
+  </url>
+
+  <!-- Exclusive Seasonal Packages & Offers -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#offers</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#offers" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#offers" />
+  </url>
+
+  <!-- Clinical Results & Treatment Gallery -->
+  <url>
+    <loc>https://velmora-aesthetics.eg/#gallery</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://velmora-aesthetics.eg/#gallery" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://velmora-aesthetics.eg/#gallery" />
+  </url>
+
+</urlset>

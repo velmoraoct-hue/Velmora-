@@ -1,0 +1,194 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwnerEmail() {
+      return isSignedIn() && request.auth.token.email == 'velmora.oct@gmail.com';
+    }
+
+    function isStaffMember() {
+      return isSignedIn() && (
+        isOwnerEmail() ||
+        (
+          exists(/databases/$(database)/documents/staff_roles/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/staff_roles/$(request.auth.uid)).data.status != 'deactivated'
+        )
+      );
+    }
+
+    function isOwner() {
+      return isSignedIn() && (
+        isOwnerEmail() ||
+        (
+          exists(/databases/$(database)/documents/staff_roles/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/staff_roles/$(request.auth.uid)).data.status != 'deactivated' &&
+          get(/databases/$(database)/documents/staff_roles/$(request.auth.uid)).data.role == 'owner'
+        )
+      );
+    }
+
+    function isOwnerOrAdmin() {
+      return isSignedIn() && (
+        isOwnerEmail() ||
+        (
+          exists(/databases/$(database)/documents/staff_roles/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/staff_roles/$(request.auth.uid)).data.status != 'deactivated' &&
+          (
+            get(/databases/$(database)/documents/staff_roles/$(request.auth.uid)).data.role == 'owner' ||
+            get(/databases/$(database)/documents/staff_roles/$(request.auth.uid)).data.role == 'admin'
+          )
+        )
+      );
+    }
+
+    function isValidBooking(data) {
+      return data.customerName is string && data.customerName.size() >= 2 && data.customerName.size() <= 120 &&
+             data.customerPhone is string && data.customerPhone.size() >= 8 && data.customerPhone.size() <= 30 &&
+             (!('customerEmail' in data) || (data.customerEmail is string && data.customerEmail.size() <= 150)) &&
+             data.serviceId is string && data.serviceId.size() <= 100 &&
+             data.appointmentDate is string && data.appointmentDate.size() <= 20 &&
+             data.appointmentTime is string && data.appointmentTime.size() <= 10 &&
+             data.branch in ['october', 'zayed'] &&
+             data.status in ['pending', 'confirmed', 'completed', 'cancelled', 'no-show'];
+    }
+
+    function isValidService(data) {
+      return data.nameAr is string && data.nameAr.size() >= 2 && data.nameAr.size() <= 150 &&
+             data.nameEn is string && data.nameEn.size() >= 2 && data.nameEn.size() <= 150 &&
+             data.category in ['skincare', 'injectables', 'peeling', 'laser'] &&
+             data.priceEgp is number && data.priceEgp >= 0 &&
+             data.status in ['draft', 'published', 'unavailable'];
+    }
+
+    // --- Services ---
+    match /services/{serviceId} {
+      allow get: if isValidId(serviceId) && (isStaffMember() || resource.data.status == 'published');
+      allow list: if isStaffMember() || resource.data.status == 'published';
+      allow create, update, delete: if isValidId(serviceId) && isOwnerOrAdmin() && isValidService(incoming());
+    }
+
+    // --- Practitioners ---
+    match /practitioners/{practitionerId} {
+      allow get: if isValidId(practitionerId) && (isStaffMember() || resource.data.isActive == true);
+      allow list: if isStaffMember() || resource.data.isActive == true;
+      allow create, update, delete: if isValidId(practitionerId) && isOwnerOrAdmin();
+    }
+
+    // --- Bookings ---
+    match /bookings/{bookingId} {
+      // Anyone can submit a booking request if status is initialized to 'pending'
+      allow create: if isValidId(bookingId) &&
+                       isValidBooking(incoming()) &&
+                       incoming().status == 'pending';
+      // Only clinic staff can read bookings, view lists, update status or delete
+      allow get, list: if isStaffMember();
+      allow update: if isValidId(bookingId) && isStaffMember() && isValidBooking(incoming());
+      allow delete: if isValidId(bookingId) && isOwnerOrAdmin();
+    }
+
+    // --- Customers ---
+    match /customers/{customerId} {
+      allow read: if isStaffMember();
+      allow create, update: if isValidId(customerId) && isStaffMember();
+      allow delete: if isValidId(customerId) && isOwnerOrAdmin();
+    }
+
+    // --- Transactions (Revenue) ---
+    match /transactions/{transactionId} {
+      allow read: if isOwnerOrAdmin();
+      allow create, update: if isValidId(transactionId) && isOwnerOrAdmin();
+      allow delete: if isValidId(transactionId) && isOwnerOrAdmin();
+    }
+
+    // --- Expenses ---
+    match /expenses/{expenseId} {
+      allow read: if isOwnerOrAdmin();
+      allow create, update: if isValidId(expenseId) && isOwnerOrAdmin();
+      allow delete: if isValidId(expenseId) && isOwnerOrAdmin();
+    }
+
+    // --- Inventory ---
+    match /inventory/{itemId} {
+      allow read: if isStaffMember();
+      allow create, update: if isValidId(itemId) && isStaffMember();
+      allow delete: if isValidId(itemId) && isOwnerOrAdmin();
+    }
+
+    // --- Offers ---
+    match /offers/{offerId} {
+      allow get: if isValidId(offerId) && (isStaffMember() || resource.data.isActive == true);
+      allow list: if isStaffMember() || resource.data.isActive == true;
+      allow create, update, delete: if isValidId(offerId) && isOwnerOrAdmin();
+    }
+
+    // --- Settings ---
+    match /settings/{settingId} {
+      allow read: if true; // Public site needs contact/opening hours/address
+      allow write: if isOwnerOrAdmin();
+    }
+
+    // --- Audit Logs ---
+    match /audit_logs/{logId} {
+      allow read: if isOwnerOrAdmin();
+      allow create: if isStaffMember();
+      allow update, delete: if false; // Immutable audit log
+    }
+
+    // --- Staff Roles ---
+    match /staff_roles/{userId} {
+      allow read: if isStaffMember();
+      // Only owner can assign, update, or revoke staff roles
+      // Nobody can demote or alter primary owner email
+      allow write: if isOwner() && (
+        userId != 'velmora.oct@gmail.com' || isOwnerEmail()
+      );
+    }
+
+    // --- Staff Invitations ---
+    match /staff_invitations/{invitationId} {
+      // Invited user can read their invitation, or any staff member can list invitations
+      allow read: if isStaffMember() || (
+        isSignedIn() && request.auth.token.email == resource.data.email
+      );
+      // Only owner can create or delete invitations
+      allow create, delete: if isOwner();
+      // Owner can update, or invited user can update to accept their pending invitation
+      allow update: if isOwner() || (
+        isSignedIn() && request.auth.token.email == resource.data.email
+      );
+    }
+
+    // --- Media Assets ---
+    match /media_assets/{mediaId} {
+      allow read: if true; // Public site reads clinic assets, photos, logos
+      allow write: if isValidId(mediaId) && isStaffMember();
+    }
+
+    // --- Branding Configuration ---
+    match /branding/{configId} {
+      allow read: if true; // Public site reads published branding config
+      allow write: if isOwnerOrAdmin(); // Only owner or admin with branding permission
+    }
+  }
+}

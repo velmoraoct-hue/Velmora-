@@ -1,0 +1,8 @@
+{
+  "name": "Remix VELMORA Aesthetics \u0026 Beauty",
+  "description": "Premium skincare and aesthetic beauty center in 6th of October City \u0026 Sheikh Zayed, Egypt. Bilingual Arabic/English medical beauty catalog, real-time booking, and administration system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
